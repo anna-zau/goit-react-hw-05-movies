@@ -1,4 +1,4 @@
-import { useParams, Link, useLocation } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 import { fetchMovieById } from '../../services/API';
@@ -6,7 +6,7 @@ import { Box, List, Item } from './MovieDetails.styled';
 
 export const MovieDetails = () => {
   const { movieId } = useParams();
-  const location = useLocation();
+  //   const location = useLocation();
   const [movieInfo, setMovieInfo] = useState([]);
 
   useEffect(() => {
