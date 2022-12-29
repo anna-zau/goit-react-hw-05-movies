@@ -1,13 +1,18 @@
-import { useParams, Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useParams, useLocation, Outlet } from 'react-router-dom';
+import { useState, useEffect, useRef, Suspense } from 'react';
 
 import { fetchMovieById } from '../../services/API';
-import { Box, List, Item } from './MovieDetails.styled';
+import { Box, List, Item, LinkItem, Additional } from './MovieDetails.styled';
+import { BackLink } from '../BackLink/BackLink';
 
-export const MovieDetails = () => {
+const MovieDetails = () => {
   const { movieId } = useParams();
-  //   const location = useLocation();
+  const location = useLocation();
+
   const [movieInfo, setMovieInfo] = useState([]);
+
+  const pageFrom = location.state?.from ?? '/';
+  const refLocation = useRef(location.state?.location);
 
   useEffect(() => {
     fetchMovieById(movieId)
@@ -31,7 +36,7 @@ export const MovieDetails = () => {
 
   return (
     <div>
-      <Link>Go back</Link>
+      <BackLink to={refLocation.current ?? pageFrom}>Go back</BackLink>
       <Box>
         <img
           src={
@@ -45,9 +50,9 @@ export const MovieDetails = () => {
         <List>
           <Item>
             <h2>
-              {title && original_title} ({release_date})
+              {title && original_title} ({new Date(release_date).getFullYear()})
             </h2>
-            <p>User score: {vote_average}</p>
+            <p>User score: {Math.floor(vote_average * 10)}%</p>
           </Item>
           <Item>
             <h3>Overview</h3>
@@ -55,10 +60,31 @@ export const MovieDetails = () => {
           </Item>
           <Item>
             <h3>Genres</h3>
-            <p>{genres ? genres.map(genre => genre.name).join('  ') : '-'}</p>
+            <p>{genres ? genres.map(genre => genre.name).join(', ') : '-'}</p>
           </Item>
         </List>
       </Box>
+
+      <Additional>
+        <h3>Additional information</h3>
+        <List>
+          <li>
+            <LinkItem to={'cast'} state={{ from: pageFrom }}>
+              Cast
+            </LinkItem>
+          </li>
+          <li>
+            <LinkItem to={'reviews'} state={{ from: pageFrom }}>
+              Reviews
+            </LinkItem>
+          </li>
+        </List>
+      </Additional>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Outlet />
+      </Suspense>
     </div>
   );
 };
+
+export default MovieDetails;

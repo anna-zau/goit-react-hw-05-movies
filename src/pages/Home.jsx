@@ -1,10 +1,10 @@
-import { PopularMovies } from 'components/PopularMovies/PopularMovies';
+import { MoviesList } from 'components/MoviesList/MoviesList';
 import { useEffect, useState } from 'react';
 
 import { fetchPopularMovies } from 'services/API';
 import { Title } from './Home.styled';
 
-export const Home = () => {
+const Home = () => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
@@ -16,7 +16,9 @@ export const Home = () => {
   return (
     <>
       <Title>Trending today</Title>
-      <PopularMovies moviesList={movies} />
+      <MoviesList moviesList={movies} />
     </>
   );
 };
+
+export default Home;

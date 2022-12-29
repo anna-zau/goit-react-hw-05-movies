@@ -3,18 +3,20 @@ import styled from 'styled-components';
 
 export const List = styled.ul`
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-column-gap: 10px;
-  grid-row-gap: 1em;
+  grid-row-gap: 10px;
   justify-content: center;
+
   padding: 10px;
+  margin-top: 15px;
 
   list-style: none;
 `;
 
 export const Item = styled.li`
   /* border: 1px solid black; */
-  max-width: 200px;
+  max-width: 150px;
   /* height: 280px; */
 
   padding: 5px;
